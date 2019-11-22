@@ -45,7 +45,9 @@ end
 def remove_pet_by_name(shop, pet_name)
   for pet in shop[:pets]
       if pet[:name] == pet_name
-      pet.shift
+        shop[:pets].delete(pet)
+      # pet.shift
+      # return nil
       end
   end
   return nil
@@ -73,4 +75,22 @@ end
 
 def customer_can_afford_pet(customer, new_pet)
   customer[:cash] >= new_pet[:price] ? true : false
+end
+
+def sell_pet_to_customer(shop, pet, customer)
+  # AFTER THE FUNCTION HAS RUN, IT SHOULD
+  # select the pet from the shop and assign it to the customer
+  if shop[:pets].include? pet
+    if customer_can_afford_pet(customer, pet)
+      add_pet_to_customer(customer, pet)
+      remove_pet_by_name(shop, pet)
+      increase_pets_sold(shop, 1)
+      add_or_remove_cash(shop, pet[:price])
+      remove_customer_cash(customer, pet[:price])
+    else
+      p "insufficient fund"
+    end
+      p "pet not found"
+  end
+
 end
